@@ -3,13 +3,15 @@ const loadingDOM = document.querySelector(".loading-text");
 const formDOM = document.querySelector(".task-form");
 const taskInputDOM = document.querySelector(".task-input");
 const formAlertDOM = document.querySelector(".form-alert");
+const baseURL = "https://to-do-app-zeta-ten.vercel.app";
+
 // Load tasks from /api/tasks
 const showTasks = async () => {
   loadingDOM.style.visibility = "visible";
   try {
     const {
       data: { tasks },
-    } = await axios.get("/api/v1/tasks");
+    } = await axios.get("${baseURL}/api/v1/tasks");
     if (tasks.length < 1) {
       tasksDOM.innerHTML =
         '<h5 class="empty-list"><hr>No tasks in your list<hr></h5>';
@@ -55,7 +57,7 @@ tasksDOM.addEventListener("click", async (e) => {
     loadingDOM.style.visibility = "visible";
     const id = el.parentElement.dataset.id;
     try {
-      await axios.delete(`/api/v1/tasks/${id}`);
+      await axios.delete(`${baseURL}/api/v1/tasks/${id}`);
       showTasks();
     } catch (error) {
       console.log(error);
@@ -71,7 +73,7 @@ formDOM.addEventListener("submit", async (e) => {
   const name = taskInputDOM.value;
 
   try {
-    await axios.post("/api/v1/tasks", { name });
+    await axios.post("${baseURL}/api/v1/tasks", { name });
     showTasks();
     taskInputDOM.value = "";
     formAlertDOM.style.display = "block";
